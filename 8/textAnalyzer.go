@@ -1,21 +1,25 @@
 package main
 
 import (
+	"bufio"
 	"fmt"
+	"os"
 	"strings"
 )
 
 func main() {
-	var userText string
 	fmt.Print("Enter text: ")
-	fmt.Scanln(&userText)
+
+	reader := bufio.NewReader(os.Stdin)
+	userText, _ := reader.ReadString('\n')
+	userText = strings.TrimSpace(userText)
 
 	fmt.Println("Number of characters:", len(userText))
 	fmt.Println("Number of words:", len(strings.Split(userText, " ")))
 
-	var letter string
 	fmt.Print("Enter the letter to count: ")
-	fmt.Scanf("%s", &letter)
+	letter, _ := reader.ReadString('\n')
+	letter = strings.TrimSpace(letter)
 
 	if letter == "" || len(letter) > 1 {
 		fmt.Println("Invalid input")
