@@ -40,7 +40,9 @@ func main() {
 	app.Post("/users", createUser)
 	app.Put("/users/:id", updateUser)
 	app.Delete("/users/:id", deleteUser)
+
 	log.Fatal(app.Listen(":3000"))
+	fmt.Println("Listening on port 3000...")
 }
 
 // GET
