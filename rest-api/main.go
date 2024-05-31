@@ -30,7 +30,7 @@ func main() {
 	clientOptions := options.Client().ApplyURI("mongodb://localhost:27017")
 	client, err := mongo.Connect(context.Background(), clientOptions)
 	if err != nil {
-		log.Fatal(err)
+		fmt.Println(err)
 	}
 	collection = client.Database("user-db").Collection("users")
 
@@ -40,7 +40,6 @@ func main() {
 	app.Post("/users", createUser)
 	app.Put("/users/:id", updateUser)
 	app.Delete("/users/:id", deleteUser)
-
 	log.Fatal(app.Listen(":3000"))
 }
 
