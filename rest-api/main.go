@@ -13,7 +13,7 @@ import (
 	"go.mongodb.org/mongo-driver/mongo/options"
 )
 
-// User represents our data model
+// model
 type User struct {
 	ID       primitive.ObjectID `json:"id" bson:"_id,omitempty"`
 	Name     string             `json:"name"`
@@ -34,7 +34,7 @@ func main() {
 	}
 	collection = client.Database("user-db").Collection("users")
 
-	// Define routes
+	// routes
 	app.Get("/users", getUsers)
 	app.Get("/users/:id", getUser)
 	app.Post("/users", createUser)
