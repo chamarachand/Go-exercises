@@ -2,9 +2,9 @@ package main
 
 import (
 	"context"
+	"fmt"
 	"log"
 	"net/http"
-	"strconv"
 
 	"github.com/gofiber/fiber/v2"
 	"go.mongodb.org/mongo-driver/bson"
@@ -60,13 +60,14 @@ func getUsers(c *fiber.Ctx) error {
 }
 
 func getUser(c *fiber.Ctx) error {
-	id, err := strconv.Atoi(c.Params("id"))
+	id := c.Params("id")
+	objectId, err := primitive.ObjectIDFromHex(id)
 	if err != nil {
 		return c.Status(http.StatusBadRequest).JSON(fiber.Map{"error": "Invalid ID"})
 	}
 
 	var user User
-	err = collection.FindOne(context.Background(), bson.M{"_id": id}).Decode(&user)
+	err = collection.FindOne(context.Background(), bson.M{"_id": objectId}).Decode(&user)
 	if err != nil {
 		return c.Status(http.StatusNotFound).JSON(fiber.Map{"error": "User not found"})
 	}
@@ -91,7 +92,8 @@ func createUser(c *fiber.Ctx) error {
 
 // PUT
 func updateUser(c *fiber.Ctx) error {
-	id, err := strconv.Atoi(c.Params("id"))
+	id := c.Params("id")
+	objectId, err := primitive.ObjectIDFromHex(id)
 	if err != nil {
 		return c.Status(http.StatusBadRequest).JSON(fiber.Map{"error": "Invalid ID"})
 	}
@@ -101,7 +103,7 @@ func updateUser(c *fiber.Ctx) error {
 		return c.Status(http.StatusBadRequest).JSON(fiber.Map{"error": err.Error()})
 	}
 
-	_, err = collection.UpdateOne(context.Background(), bson.M{"_id": id}, bson.M{"$set": user})
+	_, err = collection.UpdateOne(context.Background(), bson.M{"_id": objectId}, bson.M{"$set": user})
 	if err != nil {
 		return c.Status(http.StatusInternalServerError).JSON(fiber.Map{"error": err.Error()})
 	}
@@ -111,12 +113,13 @@ func updateUser(c *fiber.Ctx) error {
 
 // DELETE
 func deleteUser(c *fiber.Ctx) error {
-	id, err := strconv.Atoi(c.Params("id"))
+	id := c.Params("id")
+	objectId, err := primitive.ObjectIDFromHex(id)
 	if err != nil {
 		return c.Status(http.StatusBadRequest).JSON(fiber.Map{"error": "Invalid ID"})
 	}
 
-	_, err = collection.DeleteOne(context.Background(), bson.M{"_id": id})
+	_, err = collection.DeleteOne(context.Background(), bson.M{"_id": objectId})
 	if err != nil {
 		return c.Status(http.StatusInternalServerError).JSON(fiber.Map{"error": err.Error()})
 	}
