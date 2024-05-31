@@ -1,0 +1,4 @@
+This is a sample text file.
+It contains multiple lines.
+The purpose is to demonstrate file handling in Go.
+We will count lines and find specific words in this file.
