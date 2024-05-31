@@ -1,2 +1,0 @@
-Total number of lines: 4
-Total occurrences of the word 'file': 1
